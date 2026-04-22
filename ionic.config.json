@@ -1,0 +1,7 @@
+{
+  "name": "my-library",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
