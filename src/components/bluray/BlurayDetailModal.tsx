@@ -34,12 +34,13 @@ const BlurayDetailModal: React.FC<BlurayDetailModalProps> = ({
     setFetching(true);
     LookupService.lookupBlurayByTitle(bluray.title)
       .then(result => {
-        if (!result) return;
-        const updated: BlurayInput = {
-          title:          result.title ?? bluray.title,
-          original_title: result.original_title ?? bluray.original_title,
-          director:       result.director ?? bluray.director,
-          genre:          result.genre ?? bluray.genre,
+        if (!result?.imageUrl) return;
+        setLocalCover(result.imageUrl);
+        onUpdate(bluray.id, {
+          title:          bluray.title,
+          original_title: bluray.original_title,
+          director:       bluray.director,
+          genre:          bluray.genre,
           saga:           bluray.saga,
           volume:         bluray.volume,
           steelbook:      bluray.steelbook,
@@ -50,9 +51,7 @@ const BlurayDetailModal: React.FC<BlurayDetailModalProps> = ({
           notes:          bluray.notes,
           barcode:        bluray.barcode,
           cover_img:      result.imageUrl,
-        };
-        setLocalCover(result.imageUrl);
-        onUpdate(bluray.id, updated);
+        });
       })
       .finally(() => setFetching(false));
   }, [isOpen, bluray]);  // eslint-disable-line react-hooks/exhaustive-deps
